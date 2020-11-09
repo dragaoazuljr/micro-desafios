@@ -109,6 +109,27 @@ export class DesafiosController {
         }
     }
 
+    @MessagePattern('consultar-desafios-realizados')
+    async consultarDesafiosRealizados (
+        @Payload() data: any,
+        @Ctx() context: RmqContext
+    ) {
+        const channel = context.getChannelRef();
+        const message = context.getMessage();
+
+        try {
+            const {idCategoria, dataRef} = data;
+
+            if(dataRef){
+                return await this._desafiosSerivce.consultarDesafiosRealizadosPelaData(idCategoria, dataRef);
+            } else {
+                return await this._desafiosSerivce.consultarDesafiosRealizados(idCategoria);
+            }
+        } finally {
+            channel.ack(message)
+        }
+    }
+
     validateErrorMessageToClearQueue(error: any, channel, message) {
         this.ackErrors.map(async err => {
             if(error.message.includes(err)){
