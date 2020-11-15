@@ -1,0 +1,17 @@
+on: [push]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to cloud foundry
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2 
+      - name: Deploy
+        id: deploy
+        uses: dragaoazuljr/micro-desafios@master
+        with: 
+          cfUrl: "https://api.cf.us10.hana.ondemand.com"
+          cfUser: "danillo.moraes@outlook.com"
+          cfPassword: '$V6Z7TU4#dq*?GX'
+          cfDevOrg: "3c5b9327trial"
+          cfDevSpace: "dev"
